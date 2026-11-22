@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: postgresql://blueprint:blueprint@localhost:5432/blueprint
+      DATABASE_URL_TEST: postgresql://blueprint:blueprint@localhost:5432/blueprint_test
+      APP_URL: http://localhost:3000
+      AI_PROVIDER: mock
+      WORKER_HEALTH_PORT: "3101"
+      MCP_PORT: "3102"
+      API_URL: http://localhost:3000
+      MCP_PUBLIC_URL: http://localhost:3102/mcp
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+      # No service containers: use the PostgreSQL that is preinstalled on the runner.
+      - name: Start PostgreSQL
+        run: |
+          sudo systemctl start postgresql
+          sudo -u postgres psql -c "CREATE USER blueprint WITH PASSWORD 'blueprint' CREATEDB;"
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm typecheck
+      - run: pnpm db:migrate:test
+      - run: pnpm test
+      - run: pnpm build
+      - run: npx playwright install --with-deps chromium
+      - run: pnpm test:e2e

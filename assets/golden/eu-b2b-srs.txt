@@ -1,0 +1,821 @@
+
+
+--- PAGE 1 ---
+1. Introduction 
+1.1 Purpose 
+The purpose of this system is to provide a centralized B2B(Business-to-Business) 
+tourism platform that enables tour operators, travel agencies,  and admins to 
+manage bookings, tour packages, payments, and partnerships digitally.  
+ 
+1.2 Scope  
+The platform shall: 
+❖​Allow agencies to browse and book tourism packages 
+❖​Enable suppliers to upload tourism services 
+❖​Provide online payments 
+❖​Generate invoices and reports 
+❖​Provide analytics dashboard 
+❖​Support multi-user management 
+1.3 Definitions and Acronyms  
+ 
+Term 
+Meaning 
+B2B 
+Business to Business 
+Admin 
+System Administrator 
+API 
+Application Programming Interface  
+ 
+
+
+--- PAGE 2 ---
+2. Overall Description  
+2.1 Product Perspective  
+The platform is a web-based tourism management system that connects tourism 
+service providers with partner businesses through a centralized booking and 
+management portal. 
+2.2 Product Features  
+Main features may include: 
+❖​User authentication 
+❖​Company registration 
+❖​Tour package management 
+❖​Transport booking 
+❖​Partner management 
+❖​Payment gateway integration 
+❖​Reporting dashboard 
+❖​Notifications 
+❖​Review and rating system 
+2.3 User Classes and Characteristics  
+User Type  
+Description  
+Super Admin  
+Manages the entire platform  
+Tourism Company / Operator 
+Uploads packages and manages partners  
+Travel Agency  
+Books packages for clients  
+Accountant  
+Handles invoices and payments  
+ 
+2.4 Operating Environment  
+❖​Frontend: React / Next.js 
+❖​Backend: Django / PHP / Node.js 
+
+
+--- PAGE 3 ---
+❖​Database: PostgreSQL / MySQL 
+❖​Hosting: AWS / Azure 
+❖​Browser Support: Chrome, Firefox, Safari,Edge 
+ 
+2.5 Assumptions and Dependencies  
+❖​Internet connection is required 
+❖​Payment gateways must be available 
+❖​Third-party APIs may be used for maps and payment services 
+ 
+ 
+3. PROJECT SPECIFICATION 
+ 
+ 
+SR 
+NO. 
+ 
+FEATURES 
+USERS 
+DETAILS 
+1. 
+Project Environment Setup 
+ 
+2. 
+API and Database Development 
+ 
+3. 
+System Features Functional Requirements 
+ 
+4. 
+Account 
+Management  
+Tour 
+Operators 
+❖​The system shall allow tour operators to 
+register company accounts. (Registration ) 
+❖​The system shall allow tour operators to 
+securely log into the platform. (Login) 
+❖​The system shall allow tour operators to 
+update:(Profile Management ) 
+●​ Company information 
+●​ Contact details 
+●​ Business licenses 
+●​ Company logo 
+●​ Address 
+❖​The system shall allow tour operators to 
+
+
+--- PAGE 4 ---
+change or reset passwords securely. 
+(Password Management) 
+5. 
+Tour Package 
+Management  
+Tour 
+operators 
+❖​The tour operator shall create 
+packages.(Create Tour Packages) 
+❖​The system shall allow operators to add: 
+●​ Package title 
+●​ Destination 
+●​ Duration 
+●​ Pricing 
+●​ full itinerary fields 
+●​ start/end times 
+●​ meeting point,  
+●​ pick up options,  
+●​ age policy, 
+●​ Languages, 
+●​ Accessibility, 
+●​ blackout dates, 
+●​ cutoff times, 
+●​ seasonal notes,  
+●​ map pin, videos and internal ops 
+notes 
+●​ Images/videos 
+●​ Maximum group size 
+●​ Package inclusions/exclusions 
+❖​The system shall allow tour operators to 
+modify existing packages.(Edit Packages) 
+❖​The system shall allow tour operators to 
+remove inactive packages. (Delete 
+Packages) 
+❖​The system shall allow tour operators to 
+set package availability dates. (Package 
+Availability) 
+❖​The system shall allow operators to 
+configure seasonal pricing rates. (Seasonal 
+Pricing) 
+ 
+6. 
+Booking 
+Management  
+Tour 
+Operators 
+❖​The system shall allow tour operators to 
+view all bookings made for their packages 
+
+
+--- PAGE 5 ---
+(View Bookings) 
+❖​The system shall allow tour operators to 
+approve or reject booking requests. 
+(Booking Approval) 
+❖​The system shall allow operators to 
+track:(Booking Status Tracking) 
+●​ Pending bookings 
+●​ Approved bookings 
+●​ Cancelled bookings 
+●​ Completed tours 
+❖​The system shall allow tour operators to 
+cancel bookings when necessary. 
+(Booking Cancellation) 
+❖​The system shall generate booking 
+confirmations automatically. (Generate 
+Booking Confirmation) 
+7. 
+Partner & 
+Agency 
+Management  
+Tour 
+Operators 
+❖​The system shall allow tour operators to 
+manage relationships with travel agencies. 
+(Manage Partner Agencies) 
+❖​The system shall allow tour operators to 
+approve or deny partnership requests. 
+(Approve Agency Requests) 
+❖​The system shall allow operators to 
+communicate with agencies through 
+messaging or email notifications. (Partner 
+Communication) 
+8. 
+Hotel & 
+Accommodation 
+Coordination  
+Tour 
+Operators 
+❖​The system shall allow operators to assign 
+hotels/lodges to tour packages. 
+(Accommodation Assignment) 
+❖​The system shall allow operators to 
+monitor accommodation availability. 
+(Room Availability Monitoring) 
+❖​The system shall allow operators to 
+reserve rooms for tourists. 
+(Accommodation Booking) 
+9. 
+Transport 
+Management  
+Tour 
+Operators 
+❖​The system shall allow operators to 
+schedule vehicles for tours. (Vehicle 
+
+
+--- PAGE 6 ---
+Scheduling) 
+❖​The system shall allow operators to assign 
+drivers/guides to trips. (Driver 
+Assignment) 
+❖​The system shall allow operators to define 
+travel routes and pickup points. (Route 
+Management) 
+10. 
+Payment & 
+Financial  
+Tour 
+Operators 
+❖​The system shall automatically generate 
+invoices for bookings. (Invoice 
+Generation) 
+❖​The system shall allow operators to 
+monitor payment statuses. (Payment 
+Tracking) 
+❖​The system shall calculate commissions 
+for partner agencies. (Commission 
+Management) 
+❖​The system shall support refund requests 
+and refund tracking. (Refund Processing) 
+11. 
+Reporting & 
+Analytics  
+Tour 
+Operators 
+❖​The system shall generate booking and 
+revenue reports. (Sales Reports) 
+❖​The system shall provide analytics on 
+customer preferences and booking trends. 
+(Customer Analytics) 
+❖​The system shall display:(Performance 
+Dashboard) 
+●​ Total bookings 
+●​ Revenue 
+●​ Popular packages 
+●​ Active partners 
+12. 
+Notifications 
+Tour 
+Operators 
+❖​The system shall notify operators of new 
+bookings. (Booking Notifications) 
+❖​The system shall notify operators of 
+completed payments. (Payment 
+Notifications) 
+❖​The system shall send reminders for 
+upcoming tours and pending tasks. 
+
+
+--- PAGE 7 ---
+(Reminder Notifications) 
+13. 
+Review & 
+Feedback  
+Tour 
+Operators 
+❖​The system shall allow operators to view 
+customer reviews and ratings(View 
+Reviews).  
+❖​The system shall allow operators to 
+respond to customer feedback.(Respond to 
+Reviews) 
+14. 
+Document 
+Management  
+Tour 
+Operators 
+❖​The system shall allow operators to 
+upload: 
+●​ Travel permits 
+●​ Insurance documents 
+●​ Contracts 
+●​ Licenses 
+❖​The system shall allow operators to 
+download and manage uploaded 
+files.(Access Documents) 
+15. 
+Security  
+Tour 
+Operators 
+❖​The system shall restrict access based on 
+user roles. (Role-Based Access) 
+❖​The system shall encrypt all payment and 
+booking transactions. (Secure 
+Transactions) 
+❖​The system shall maintain logs of operator 
+activities. (Activity Logs) 
+16. 
+Account 
+Management  
+Travel 
+Agencies  
+❖​The system shall allow travel agencies to 
+register accounts on the platform. (Agency 
+Registration) 
+❖​The system shall allow travel agencies to 
+securely log into the platform. (Secure 
+Login) 
+❖​The system shall allow agencies to update: 
+(Profile Management) 
+●​ Agency name 
+●​ Contact information 
+●​ Business registration details 
+
+
+--- PAGE 8 ---
+●​ Address 
+●​ Company logo 
+❖​The system shall allow agencies to reset 
+and change passwords securely. (Password 
+Management) 
+17. 
+Tour Package 
+Browsing  
+Travel 
+Agencies  
+❖​The system shall allow agencies to search 
+for tourism packages. (Search Tour 
+Packages) 
+❖​The system shall allow agencies to filter 
+packages by:(Filter Tour Packages) 
+●​ Destination 
+●​ Budget 
+●​ Duration 
+●​ Tour category 
+●​ Availability date 
+❖​The system shall display: (View Package 
+Details) 
+●​ Itinerary 
+●​ Pricing 
+●​ Accommodation details 
+●​ Transport details 
+●​ Package inclusions/exclusions 
+●​ Images and videos 
+❖​The system shall allow agencies to save 
+preferred packages for future reference. 
+(Save Favorite Packages) 
+18. 
+Booking 
+Management  
+Travel 
+Agencies  
+❖​The system shall allow agencies to place 
+bookings for clients. (Book Tour 
+Packages) 
+❖​The system shall allow agencies to 
+customize:(Customize Bookings) 
+●​ Number of travelers 
+●​ Accommodation options 
+●​ Transport options 
+●​ Travel dates 
+❖​The system shall generate booking 
+confirmations automatically. (Booking 
+Confirmation) 
+
+
+--- PAGE 9 ---
+❖​The system shall allow agencies to track: 
+●​ Pending bookings 
+●​ Approved bookings 
+●​ Cancelled bookings 
+●​ Completed trips 
+❖​The system shall allow agencies to request 
+booking cancellations. (Cancel Bookings) 
+19. 
+Client 
+Management  
+Travel 
+Agencies  
+❖​The system shall allow agencies to create 
+and manage customer profiles. (Client 
+Profile Management) 
+❖​The system shall allow agencies to store 
+traveler details such as: 
+●​ Names 
+●​ Passport information 
+●​ Emergency contacts 
+●​ Special requests 
+❖​The system shall allow agencies to view 
+customer booking history.(Booking 
+History) 
+20. 
+Communication  Travel 
+Agencies  
+❖​The system shall allow agencies to 
+communicate with tour operators and 
+suppliers. (Messaging System) 
+❖​The system shall notify agencies 
+about:(Notification Management) 
+●​ Booking approvals 
+●​ Payment confirmations 
+●​ Schedule updates 
+●​ Cancellations 
+❖​The system shall allow agencies to send 
+inquiries regarding packages and services. 
+(Inquiry Submission) 
+21. 
+Payment & 
+Financial  
+Travel 
+Agencies  
+❖​The system shall allow agencies to make 
+online payments for bookings. (Online 
+Payments) 
+❖​The system shall allow agencies to view 
+and download invoices. (Invoice Access) 
+
+
+--- PAGE 10 ---
+❖​The system shall maintain payment 
+transaction records. (Transaction History) 
+❖​The system shall allow agencies to request 
+refunds for cancelled bookings. (Refund 
+Requests) 
+❖​The system shall allow agencies to track 
+earned commissions and discounts. 
+(Commission Tracking) 
+22. 
+Reporting  
+Travel 
+Agencies  
+❖​The system shall generate reports on 
+bookings made by the agency. (Booking 
+Reports) 
+❖​The system shall generate payment and 
+revenue reports. (Financial Reports) 
+❖​The system shall provide analytics on 
+customer travel preferences and booking 
+patterns. (Client Analytics) 
+23. 
+Document 
+Management  
+Travel 
+Agencies  
+❖​The system shall allow agencies to 
+upload: (Upload Travel Documents) 
+●​ Passports 
+●​ Travel permits 
+●​ Insurance documents 
+●​ Visa documents 
+❖​The system shall allow agencies to 
+download invoices and booking 
+documents. (Download Documents) 
+24. 
+Review & 
+Feedback  
+Travel 
+Agencies  
+❖​The system shall allow agencies to rate 
+tour operators and tourism services. (Rate 
+Services) 
+❖​The system shall allow agencies to 
+provide written feedback on completed 
+trips. (Submit Reviews) 
+❖​The system shall allow agencies to view 
+ratings of tour operators and 
+
+
+--- PAGE 11 ---
+suppliers.(View Supplier Ratings)  
+ 
+25. 
+Dashboard  
+Travel 
+Agencies  
+❖​The system shall provide a dashboard 
+displaying: (Agency Dashboard) 
+●​ Active bookings 
+●​ Pending approvals 
+●​ Revenue summaries 
+●​ Notifications 
+●​ Popular destinations 
+❖​The system shall display upcoming travel 
+schedules in a calendar format. (Calendar 
+View) 
+26. 
+Security  
+Travel 
+Agencies  
+❖​The system shall restrict access based on 
+agency user roles. (Role-Based Access) 
+❖​The system shall securely store customer 
+and booking data. (Secure Data Storage) 
+❖​The system shall maintain logs of agency 
+activities. (Activity Logging) 
+27. 
+User & Account 
+Management  
+System 
+Admin 
+❖​The system shall allow the System 
+Administrator to manage all user accounts 
+on the platform. (Manage User Accounts) 
+❖​The system shall allow the administrator 
+to create accounts for: (Create User 
+Accounts) 
+●​ Tour operators 
+●​ Travel agencies 
+●​ Hotel providers 
+●​ Transport providers 
+●​ Internal staff 
+❖​The system shall allow the administrator 
+to approve or reject company registration 
+requests. (Approve Registrations) 
+❖​The system shall allow the administrator 
+to suspend or deactivate accounts. 
+(Suspend Accounts) 
+
+
+--- PAGE 12 ---
+❖​The system shall allow the administrator 
+to reset user passwords. (Reset User 
+Passwords) 
+❖​The system shall allow the administrator 
+to assign and manage user roles and 
+permissions. (Role Assignment) 
+28. 
+Platform 
+Monitoring  
+System 
+Admin 
+❖​The system shall provide an 
+administrative dashboard displaying: 
+●​ Active users 
+●​ Total bookings 
+●​ Revenue statistics 
+●​ System alerts 
+●​ Platform activity 
+❖​The system shall allow the administrator 
+to monitor all booking and payment 
+transactions. (Monitor Transactions) 
+❖​The system shall allow the administrator 
+to access system activity logs. (View 
+Activity Logs) 
+❖​The system shall allow the administrator 
+to monitor: 
+●​ Server performance 
+●​ Database performance 
+●​ API usage 
+●​ System uptime 
+29. 
+Tour & Booking 
+Management  
+System 
+Admin 
+❖​The system shall allow the administrator 
+to view, edit, approve, or remove tour 
+packages. (Manage Tour Packages) 
+❖​The system shall allow the administrator 
+to monitor all bookings across the 
+platform. (Monitor Bookings) 
+❖​The system shall allow the administrator 
+to intervene in disputed bookings. 
+(Resolve Booking Disputes) 
+❖​The system shall allow the administrator 
+to cancel suspicious or fraudulent 
+
+
+--- PAGE 13 ---
+bookings. (Cancel Fraudulent Bookings) 
+30. 
+Payment & 
+Financial 
+Management  
+System 
+Admin 
+❖​The system shall allow the administrator 
+to track all payments made on the 
+platform. (Monitor Payments) 
+❖​The system shall allow the administrator 
+to configure commission rates for partners 
+and agencies. (Commission Management) 
+❖​The system shall generate: (Generate 
+Financial Reports) 
+●​ Revenue reports 
+●​ Commission reports 
+●​ Refund reports 
+●​ Payment summaries 
+❖​The system shall allow the administrator 
+to approve or reject refund requests. 
+(Refund Authorisation) 
+31. 
+Content 
+Management  
+System 
+Admin 
+❖​The system shall allow the administrator 
+to manage: 
+●​ Homepage content 
+●​ Destination content 
+●​ Promotions 
+●​ Banners 
+●​ FAQs 
+❖​The system shall allow the administrator 
+to upload and delete platform media files. 
+(Manage Media Files) 
+❖​The system shall allow the administrator 
+to approve, edit, or remove inappropriate 
+reviews and ratings.(Moderate Reviews) 
+32. 
+Notification & 
+Communication  
+System 
+Admin 
+❖​The system shall allow the administrator 
+to send notifications to users. (Send 
+Notifications) 
+❖​The system shall allow the administrator 
+to broadcast system-wide announcements. 
+(Broadcast Announcements) 
+
+
+--- PAGE 14 ---
+❖​The system shall allow the administrator 
+to manage automated email templates and 
+notifications.(Email Management) 
+33. 
+Security 
+Management  
+System 
+Admin 
+❖​The system shall allow the administrator 
+to define system access permissions. 
+(Access Control Management) 
+❖​The system shall detect suspicious login 
+or transaction activities. (Fraud Detection) 
+❖​The system shall maintain secure audit 
+logs for all administrative activities. 
+(Audit Logs) 
+❖​The system shall allow the administrator 
+to initiate and manage system backups. 
+(Data Backup Management) 
+❖​The system shall allow restoration of 
+backed-up data. (Restore System Data) 
+34. 
+Reporting & 
+Analytics  
+System 
+Admin 
+❖​The system shall generate reports on: 
+(Generate Platform Reports) 
+●​ User growth 
+●​ Bookings 
+●​ Revenue 
+●​ Popular destinations 
+●​ Agency performance 
+❖​The system shall allow reports to be 
+exported in: 
+●​ PDF 
+●​ Excel 
+●​ CSV 
+❖​The system shall provide real-time 
+analytics dashboards. (Real-Time 
+Analytics) 
+35. 
+Partner & 
+Supplier 
+Management  
+System 
+Admin 
+❖​The system shall allow the administrator 
+to manage hotels, transport providers, and 
+other suppliers. (Manage Suppliers) 
+❖​The system shall allow the administrator 
+
+
+--- PAGE 15 ---
+to approve supplier service listings. 
+(Approve Supplier Listings) 
+❖​The system shall allow the administrator 
+to manage business partnerships on the 
+platform. (Manage Partnerships) 
+36. 
+System 
+Configuration  
+System 
+Admin 
+❖​The system shall allow the administrator 
+to configure: (Configure Platform 
+Settings) 
+●​ Currency settings 
+●​ Tax settings 
+●​ Time zones 
+●​ Language preferences 
+❖​The system shall allow the administrator 
+to manage third-party integrations such as: 
+●​ Payment gateways 
+●​ SMS gateways 
+●​ Email services 
+●​ Mapping services 
+❖​The system shall allow the administrator 
+to place the platform into maintenance 
+mode. (Maintenance Mode) 
+37. 
+Compliance  
+System 
+Admin 
+❖​The system shall comply with tourism and 
+financial regulations. (Regulatory 
+Compliance) 
+❖​The system shall enforce data privacy and 
+protection policies. (Data Privacy 
+Compliance) 
+38. 
+Non-Functional Requirements  
+39. 
+Performance 
+Requirements  
+ 
+❖​The system shall support 5,000 concurrent 
+users. 
+❖​Page load time shall not exceed 3 seconds. 
+ 
+40. 
+Security 
+ 
+❖​Passwords shall be encrypted. 
+
+
+--- PAGE 16 ---
+Requirements  
+❖​The system shall use HTTPS. 
+❖​The platform shall support role-based 
+authorisation. 
+ 
+41. 
+Reliability 
+Requirements  
+ 
+❖​System uptime shall be 99.9%. 
+❖​Daily database backups shall be 
+performed. 
+42. 
+Usability 
+Requirements  
+ 
+❖​The interface shall be user-friendly. 
+❖​The system shall support mobile 
+responsiveness. 
+43. 
+Scalability 
+Requirements  
+ 
+❖​The system shall support future 
+integration with mobile apps. 
+❖​The platform shall support additional 
+tourism partners. 
+ 
+ 
+External Interface Requirements  
+44. 
+User Interface  
+ 
+❖​Dashboard 
+❖​Booking pages 
+❖​Admin panel 
+❖​Reports section 
+45. 
+Hardware 
+Interface  
+ 
+❖​Cloud servers 
+❖​Payment terminals 
+46. 
+Software 
+Interface  
+ 
+❖​Payment Gateway APIs 
+❖​Google Maps API 
+❖​Email/SMS APIs 
+47. 
+Constraints  
+ 
+❖​The platform must comply with tourism 
+regulations. 
+❖​The system must support online payments 
+in Uganda. 
+❖​Internet connectivity is required. 
+
+
+--- PAGE 17 ---
+Fig.1: B2B Use case Diagram. 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+
+--- PAGE 18 ---
+ 
+Fig.2: B2B Class Diagram. 

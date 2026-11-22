@@ -1,0 +1,146 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    background: #fffdf8;
+    color: #1e1b4b;
+  }
+  body {
+    @apply font-sans text-base leading-relaxed text-ink antialiased;
+    min-height: 100vh;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display font-bold;
+  }
+  :focus-visible {
+    outline: 3px solid #7c3aed;
+    outline-offset: 2px;
+    border-radius: 8px;
+  }
+  dialog::backdrop {
+    background: rgba(30, 27, 75, 0.45);
+  }
+}
+
+@layer components {
+  .text-gradient {
+    background: linear-gradient(120deg, #7c3aed, #db2777, #ea580c);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .btn-gradient {
+    background: linear-gradient(120deg, #7c3aed, #c026d3);
+    color: #fff;
+  }
+  .btn-gradient:hover:not(:disabled) {
+    filter: brightness(0.93);
+  }
+  .brand-gradient {
+    background: linear-gradient(120deg, #7c3aed, #ec4899, #f59e0b);
+  }
+  .gradient-border {
+    position: relative;
+    background: #fff;
+    border: 2px solid transparent;
+    background-image: linear-gradient(#fff, #fff), linear-gradient(120deg, #7c3aed, #ec4899, #f59e0b);
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+  }
+  .gradient-border:focus-within {
+    animation: shimmer 6s linear infinite;
+    background-size: 100% 100%, 300% 300%;
+  }
+  .blob {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(80px);
+    pointer-events: none;
+    z-index: -1;
+  }
+  .skeleton {
+    @apply animate-pulse rounded-control bg-primary-soft;
+  }
+  .prose-doc h1 {
+    @apply mb-4 mt-2 text-3xl;
+  }
+  .prose-doc h2 {
+    @apply mb-3 mt-8 border-b border-border pb-1 text-2xl;
+  }
+  .prose-doc h3 {
+    @apply mb-2 mt-6 text-lg;
+  }
+  .prose-doc p,
+  .prose-doc ul,
+  .prose-doc ol {
+    @apply my-3;
+  }
+  .prose-doc ul {
+    @apply list-disc pl-6;
+  }
+  .prose-doc ol {
+    @apply list-decimal pl-6;
+  }
+  .prose-doc a {
+    @apply text-sky-ink underline;
+  }
+  .prose-doc code {
+    @apply rounded bg-primary-soft px-1 py-0.5 font-mono text-[13px];
+  }
+  .prose-doc pre {
+    @apply my-4 overflow-x-auto rounded-control bg-ink p-4 text-[13px] text-white;
+  }
+  .prose-doc pre code {
+    @apply bg-transparent p-0 text-white;
+  }
+  .prose-doc blockquote {
+    @apply my-3 border-l-4 border-primary/40 pl-4 text-muted;
+  }
+  .prose-doc table {
+    @apply my-4 block w-full overflow-x-auto border-collapse text-sm;
+  }
+  .prose-doc th {
+    @apply border border-border bg-primary-soft px-3 py-2 text-left font-semibold;
+  }
+  .prose-doc td {
+    @apply border border-border px-3 py-2 align-top;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 0 0, 0% 50%;
+  }
+  100% {
+    background-position: 0 0, 300% 50%;
+  }
+}
+
+@keyframes slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.slide-in {
+  animation: slide-in 0.35s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gradient-border:focus-within,
+  .slide-in,
+  .animate-pulse,
+  .animate-spin {
+    animation: none !important;
+  }
+}

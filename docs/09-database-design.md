@@ -1,0 +1,373 @@
+# Database Design
+
+## Choice
+
+PostgreSQL 16 with Prisma 6. UUID primary keys (`@default(uuid())`). `createdAt` and `updatedAt` on every business table. Projects soft-delete through `deletedAt`, and everything else cascades from Project. pg-boss creates and owns its own `pgboss` schema; Prisma never touches it.
+
+## Schema Overview
+
+| Table | Purpose | Key notes |
+|---|---|---|
+| users | Accounts | email unique, lower-cased before save |
+| sessions | Login sessions | stores only the SHA-256 of the token; expires after 30 days |
+| api_tokens | Personal access tokens for API and MCP | stores only the SHA-256 and a display prefix; revocable |
+| login_attempts | Rate limiting | one row per failed login; rows older than 15 min are ignored |
+| projects | A user's blueprint | status state machine (see `06`); mode founder/expert; soft delete |
+| sources | Uploaded or pasted inputs | raw bytes until parsed, then extracted text |
+| facts | Statements extracted from sources | category, quote (citation), confidence |
+| questions | Interview questions | one open question per ledger key at most |
+| decisions | The decision ledger | one row per catalog key per project; unique (projectId, key) |
+| documents | Generated pack files | one per output path; status, content, inputsHash |
+| pipeline_runs | Progress of background stages | stage, status, done/total, error |
+| gate_findings | Quality gate results | rule, severity, status open/accepted |
+| usage_events | AI usage and cost per call | tokens and USD cost |
+
+## Prisma schema
+
+Use this file verbatim as `packages/db/prisma/schema.prisma`.
+
+```prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum ProjectStatus {
+  draft
+  processing
+  interviewing
+  ready_to_generate
+  generating
+  gating
+  ready
+  blocked
+  stale
+  failed
+}
+
+enum ProjectMode {
+  founder
+  expert
+}
+
+enum SourceKind {
+  text
+  markdown
+  chat_export
+  pdf
+  docx
+  figma
+}
+
+enum SourceStatus {
+  pending
+  parsed
+  failed
+}
+
+enum Category {
+  business
+  users
+  scope
+  technical
+  security
+  integrations
+  data
+  operations
+  timeline
+  risk
+}
+
+enum Confidence {
+  high
+  medium
+  low
+}
+
+enum QuestionStatus {
+  open
+  answered
+  skipped
+}
+
+enum DecisionStatus {
+  confirmed
+  assumed
+  deferred
+}
+
+enum DocumentStatus {
+  pending
+  generating
+  done
+  failed
+  stale
+}
+
+enum RunStage {
+  process
+  analyze
+  generate
+  gate
+}
+
+enum RunStatus {
+  queued
+  running
+  succeeded
+  failed
+}
+
+enum Severity {
+  blocker
+  warning
+}
+
+enum FindingStatus {
+  open
+  accepted
+}
+
+model User {
+  id           String    @id @default(uuid())
+  email        String    @unique
+  name         String
+  passwordHash String
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  sessions     Session[]
+  apiTokens    ApiToken[]
+  projects     Project[]
+  usage        UsageEvent[]
+
+  @@map("users")
+}
+
+model ApiToken {
+  id         String    @id @default(uuid())
+  userId     String
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name       String
+  prefix     String
+  tokenHash  String    @unique
+  lastUsedAt DateTime?
+  revokedAt  DateTime?
+  createdAt  DateTime  @default(now())
+
+  @@index([userId, revokedAt])
+  @@map("api_tokens")
+}
+
+model Session {
+  id        String   @id @default(uuid())
+  tokenHash String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@map("sessions")
+}
+
+model LoginAttempt {
+  id        String   @id @default(uuid())
+  key       String // lower(email) + "|" + ip
+  createdAt DateTime @default(now())
+
+  @@index([key, createdAt])
+  @@map("login_attempts")
+}
+
+model Project {
+  id        String        @id @default(uuid())
+  userId    String
+  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name      String
+  mode      ProjectMode   @default(founder)
+  status    ProjectStatus @default(draft)
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  deletedAt DateTime?
+  sources   Source[]
+  facts     Fact[]
+  questions Question[]
+  decisions Decision[]
+  documents Document[]
+  runs      PipelineRun[]
+  findings  GateFinding[]
+  usage     UsageEvent[]
+
+  @@index([userId, deletedAt])
+  @@map("projects")
+}
+
+model Source {
+  id           String       @id @default(uuid())
+  projectId    String
+  project      Project      @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  kind         SourceKind
+  title        String
+  originalName String?
+  mimeType     String?
+  sizeBytes    Int          @default(0)
+  raw          Bytes?
+  url          String?      // figma only
+  text         String?
+  status       SourceStatus @default(pending)
+  error        String?
+  meta         Json         @default("{}")
+  createdAt    DateTime     @default(now())
+  facts        Fact[]
+
+  @@index([projectId])
+  @@map("sources")
+}
+
+model Fact {
+  id         String     @id @default(uuid())
+  projectId  String
+  project    Project    @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  sourceId   String
+  source     Source     @relation(fields: [sourceId], references: [id], onDelete: Cascade)
+  category   Category
+  statement  String
+  quote      String
+  confidence Confidence
+  createdAt  DateTime   @default(now())
+
+  @@index([projectId, category])
+  @@map("facts")
+}
+
+model Question {
+  id          String         @id @default(uuid())
+  projectId   String
+  project     Project        @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  key         String
+  prompt      String
+  why         String
+  options     Json           @default("[]")
+  recommended String?
+  status      QuestionStatus @default(open)
+  answer      String?
+  createdAt   DateTime       @default(now())
+  answeredAt  DateTime?
+
+  @@index([projectId, status])
+  @@map("questions")
+}
+
+model Decision {
+  id         String         @id @default(uuid())
+  projectId  String
+  project    Project        @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  key        String
+  value      String         @default("")
+  status     DecisionStatus @default(deferred)
+  rationale  String         @default("")
+  sourceRefs Json           @default("{}")
+  version    Int            @default(0)
+  updatedAt  DateTime       @updatedAt
+
+  @@unique([projectId, key])
+  @@map("decisions")
+}
+
+model Document {
+  id         String         @id @default(uuid())
+  projectId  String
+  project    Project        @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  path       String
+  title      String
+  writer     String // "ai" | "code"
+  content    String         @default("")
+  status     DocumentStatus @default(pending)
+  inputsHash String         @default("")
+  error      String?
+  tokensIn   Int            @default(0)
+  tokensOut  Int            @default(0)
+  updatedAt  DateTime       @updatedAt
+
+  @@unique([projectId, path])
+  @@map("documents")
+}
+
+model PipelineRun {
+  id         String    @id @default(uuid())
+  projectId  String
+  project    Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  stage      RunStage
+  status     RunStatus @default(queued)
+  total      Int       @default(0)
+  done       Int       @default(0)
+  error      String?
+  createdAt  DateTime  @default(now())
+  finishedAt DateTime?
+
+  @@index([projectId, createdAt])
+  @@map("pipeline_runs")
+}
+
+model GateFinding {
+  id           String        @id @default(uuid())
+  projectId    String
+  project      Project       @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  rule         String
+  severity     Severity
+  documentPath String?
+  message      String
+  status       FindingStatus @default(open)
+  acceptReason String?
+  createdAt    DateTime      @default(now())
+
+  @@index([projectId, status])
+  @@map("gate_findings")
+}
+
+model UsageEvent {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  projectId String
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  tag       String
+  model     String
+  tokensIn  Int
+  tokensOut Int
+  costUsd   Decimal  @db.Decimal(12, 6)
+  createdAt DateTime @default(now())
+
+  @@index([projectId])
+  @@map("usage_events")
+}
+```
+
+## Important Columns
+
+| Column | Rule |
+|---|---|
+| `users.email` | Trimmed and lower-cased before every read and write |
+| `sessions.tokenHash` | `sha256(token)` as hex; the raw token exists only in the cookie |
+| `sources.raw` | Present only while `status = pending`; set to `null` after parsing |
+| `sources.meta` | `{ truncated?: boolean, conversations?: number, pages?: number }` |
+| `decisions.sourceRefs` | `{ factIds?: string[], questionId?: string }` |
+| `decisions.version` | Incremented on every change to `value` or `status` |
+| `documents.path` | Export path from `29`, or `internal/task-plan.json` |
+| `usage_events.costUsd` | From OpenRouter `usage.cost`; 0 for the mock provider |
+
+## Indexes
+
+The indexes are declared in the schema above. Project lists filter on `(userId, deletedAt)`. Facts are read grouped by `(projectId, category)`. Open questions are read by `(projectId, status)`. Findings are read by `(projectId, status)`.
+
+## Seed
+
+`packages/db/prisma/seed.ts` creates the user `demo@blueprint.local` with password `demo-password-123` only when `NODE_ENV !== 'production'`. Running it again does not create duplicates.
+
+## Migrations
+
+`pnpm db:migrate` runs `prisma migrate dev` locally. `pnpm db:deploy` runs `prisma migrate deploy` in production. One initial migration named `init`.

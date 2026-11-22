@@ -1,0 +1,12 @@
+[
+  {
+    "title": "Notes app idea",
+    "mapping": {
+      "n3": { "message": { "author": { "role": "assistant" }, "create_time": 30, "content": { "parts": ["Which platform first?"] } } },
+      "n1": { "message": { "author": { "role": "system" }, "create_time": 5, "content": { "parts": ["hidden system text"] } } },
+      "n2": { "message": { "author": { "role": "user" }, "create_time": 10, "content": { "parts": ["I want a notes app for teams."] } } },
+      "n4": { "message": { "author": { "role": "user" }, "create_time": 40, "content": { "parts": ["Web first, please."] } } },
+      "root": { "message": null }
+    }
+  }
+]

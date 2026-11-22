@@ -1,0 +1,11 @@
+[
+  {
+    "name": "Booking app",
+    "chat_messages": [
+      { "sender": "human", "text": "A booking app for salons." },
+      { "sender": "assistant", "text": "Do clients pay online?" },
+      { "sender": "human", "text": "Yes, with cards." },
+      { "sender": "human", "text": "   " }
+    ]
+  }
+]

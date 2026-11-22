@@ -1,0 +1,14 @@
+node_modules
+.next
+.env
+coverage
+test-results
+playwright-report
+*.tsbuildinfo
+next-env.d.ts
+
+e2e/.logs
+
+# Local exports and test output
+exported-pack
+.claude

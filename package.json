@@ -1,0 +1,42 @@
+{
+  "name": "villa-blueprint",
+  "private": true,
+  "version": "0.1.0",
+  "packageManager": "pnpm@9.15.9",
+  "engines": {
+    "node": ">=20.11"
+  },
+  "scripts": {
+    "dev": "pnpm --parallel --filter @blueprint/web --filter @blueprint/worker --filter @blueprint/mcp dev",
+    "build": "pnpm --filter @blueprint/web build",
+    "lint": "eslint .",
+    "typecheck": "pnpm -r exec tsc --noEmit && tsc --noEmit",
+    "test": "pnpm -r --workspace-concurrency=1 test",
+    "test:e2e": "playwright test",
+    "db:generate": "pnpm --filter @blueprint/db exec prisma generate",
+    "db:migrate": "pnpm --filter @blueprint/db exec prisma migrate dev",
+    "db:migrate:test": "tsx scripts/migrate-test-db.ts",
+    "db:deploy": "pnpm --filter @blueprint/db exec prisma migrate deploy",
+    "db:seed": "pnpm --filter @blueprint/db exec tsx prisma/seed.ts",
+    "golden": "tsx scripts/golden-test.ts"
+  },
+  "devDependencies": {
+    "@blueprint/core": "workspace:^",
+    "@blueprint/db": "workspace:^",
+    "@eslint/js": "^9.15.0",
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "@playwright/test": "^1.48.0",
+    "@types/node": "^22.9.0",
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.4.5",
+    "eslint": "^9.15.0",
+    "eslint-plugin-react-hooks": "^5.0.0",
+    "globals": "^15.12.0",
+    "jszip": "^3.10.1",
+    "prettier": "^3.3.3",
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.3",
+    "typescript-eslint": "^8.15.0",
+    "zod": "^3.23.8"
+  }
+}
